@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Баракат — офлайн-агроном</title>
+<meta name="description" content="Диагностика болезней растений, лечение, лунный календарь и цены — без интернета.">
+<meta name="theme-color" content="#16231B">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Баракат">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- top status strip -->
+  <div class="statusbar">
+    <span id="clock">--:--</span>
+    <span class="net" id="netStatus">● офлайн</span>
+  </div>
+
+  <!-- ===== HOME ===== -->
+  <section class="screen active" data-screen="home">
+    <div class="home-head">
+      <p class="muted small">Добрый день, Фермер</p>
+      <h1>Что делаем сегодня?</h1>
+    </div>
+    <div class="tile-grid">
+      <button class="tile" data-goto="diag">
+        <span class="tile-icon" style="background:#7FA65C22;color:#7FA65C">📷</span>
+        <span class="tile-title">Диагностика</span>
+        <span class="tile-sub">Сфотографируй растение</span>
+      </button>
+      <button class="tile" data-goto="voice">
+        <span class="tile-icon" style="background:#D9A44122;color:#D9A441">🎙️</span>
+        <span class="tile-title">Голос</span>
+        <span class="tile-sub">Спроси вслух</span>
+      </button>
+      <button class="tile" data-goto="calendar">
+        <span class="tile-icon" style="background:#7FA6A622;color:#7FA6A6">📅</span>
+        <span class="tile-title">Календарь</span>
+        <span class="tile-sub">Когда сажать</span>
+      </button>
+      <button class="tile" data-goto="prices">
+        <span class="tile-icon" style="background:#B5502E22;color:#B5502E">📈</span>
+        <span class="tile-title">Цены</span>
+        <span class="tile-sub">Рынок сегодня</span>
+      </button>
+    </div>
+    <div class="hint-card">
+      <span>📴</span>
+      <p>Работает без интернета. Подключайтесь к Wi-Fi раз в неделю, чтобы обновить базу болезней и цены.</p>
+    </div>
+  </section>
+
+  <!-- ===== DIAGNOSIS ===== -->
+  <section class="screen" data-screen="diag">
+    <h1>Диагностика</h1>
+    <p class="muted small mb">Выберите культуру, затем «сфотографируйте» лист</p>
+    <div id="diagCrops" class="chip-grid"></div>
+    <div id="diagScanning" class="hidden center-block">
+      <div class="spinner"></div>
+      <p id="diagScanCrop" class="mt">Анализирую офлайн…</p>
+      <p class="muted small">модель на устройстве, 20 МБ</p>
+    </div>
+    <div id="diagResult" class="hidden"></div>
+  </section>
+
+  <!-- ===== VOICE ===== -->
+  <section class="screen" data-screen="voice">
+    <h1>Голосовой помощник</h1>
+    <p class="muted small mb">Работает на русском, без текста</p>
+    <div class="voice-center">
+      <button id="micBtn" class="mic-btn">🎙️</button>
+      <p id="micHint" class="muted small">Нажмите и говорите</p>
+      <div id="voiceQ" class="hidden bubble-q"></div>
+      <div id="voiceA" class="hidden bubble-a"></div>
+    </div>
+    <div class="stack" id="voiceChips"></div>
+  </section>
+
+  <!-- ===== CALENDAR ===== -->
+  <section class="screen" data-screen="calendar">
+    <h1>Календарь посева</h1>
+    <p class="muted small mb">Лунный + климатический, без интернета</p>
+    <p class="label">Культура</p>
+    <div id="calCrops" class="chip-grid"></div>
+    <p class="label">Регион</p>
+    <div id="calRegions" class="chip-grid"></div>
+    <div id="calResult" class="result-card good"></div>
+    <p class="label">Ближайшие благоприятные дни</p>
+    <div id="calUpcoming" class="stack"></div>
+  </section>
+
+  <!-- ===== PRICES ===== -->
+  <section class="screen" data-screen="prices">
+    <h1>Прогноз цен</h1>
+    <p class="muted small mb">Офлайн-история, ₽ / кг</p>
+    <div id="priceCrops" class="chip-grid"></div>
+    <div class="price-head">
+      <span id="priceNow" class="price-now"></span>
+      <span id="priceTrend" class="price-trend"></span>
+    </div>
+    <svg id="priceChart" viewBox="0 0 300 130" class="chart"></svg>
+    <div class="sync-bar">
+      <span class="muted small">Обновлено 3 дня назад</span>
+      <button id="syncBtn">📶 Обновить по Wi-Fi</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- bottom nav -->
+<nav class="tabbar">
+  <button class="tabbtn active" data-goto="home"><span>🏠</span>Главная</button>
+  <button class="tabbtn" data-goto="diag"><span>📷</span>Диагноз</button>
+  <button class="tabbtn" data-goto="voice"><span>🎙️</span>Голос</button>
+  <button class="tabbtn" data-goto="calendar"><span>📅</span>Посев</button>
+  <button class="tabbtn" data-goto="prices"><span>📈</span>Цены</button>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
